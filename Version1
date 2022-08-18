@@ -1,3 +1,6 @@
+//No Tiebreaker module
+//Need to add top 5 list
+//Split code down into smaller modules
 #The purpose of this module is to authenticate both players and uses a boolean value to allow them to keep on trying to gain access while the respective variables for each player equal 'False'
 def authentication():
   Player1_in = False
@@ -10,7 +13,7 @@ def authentication():
       print("Access Granted")
       print("\n")
     else:
-      print("Username or Password is incorrect")
+      print("Username or Passowrd is incorrect")
       print("\n")
   while Player2_in == False:
      Username = str(input("Player 2 Enter Username\n"))
@@ -20,7 +23,7 @@ def authentication():
       print("Access Granted")
       print("\n")
      else:
-      print("Username or Password is incorrect")
+      print("Username or Passowrd is incorrect")
       print("\n")
 # This module does not ask the user for any input. Two dice are rolled and a series of tests using the 'if..elif' command are then executed to determine the number of points that are added, subtracted or whether a tertiary dice needs to be rolled (if Dice_1 == Dice_2)
 def score():
@@ -81,27 +84,25 @@ def winner():
     v_points = Player2_count
   elif Player1_count == Player2_count:
     print("TIEBREAKER ROUND")
-    tiebreaker()
-def tiebreaker():
-  winner = ""
-  while winner == False:
-    import random
-    Dice_Tie1 = random.randint(1,6)
-    print("Player1 you rolled a" , Dice_Tie1)
-    Dice_Tie2 = random.randint(1,6)
-    print("Player2 you rolled a" , Dice_Tie2)
-    if Dice_Tie1 > Dice_Tie2:
-      print("Player1 is the winner")
-      Victor = "Player1"
-      v_points = Player1_count
-      winner = True
-    elif Dice_Tie2 > Dice_Tie1:
-      print("Player2 is the winner")
-      Victor = "Player2"
-      v_points = Player2_count
-      winner = True
-    scores.append(Victor +" "+ "achieved a score of" + " "
-    +str(v_points) +" "+ "points")
+    winner = False
+    while winner == False:
+      import random
+      Dice_Tie1 = random.randint(1,6)
+      print("Player1 you rolled a" , Dice_Tie1)
+      Dice_Tie2 = random.randint(1,6)
+      print("Player2 you rolled a" , Dice_Tie2)
+      if Dice_Tie1 > Dice_Tie2:
+        print("Player1 is the winner")
+        Victor = "Player1"
+        v_points = Player1_count
+        winner = True
+      elif Dice_Tie2 > Dice_Tie1:
+        print("Player2 is the winner")
+        Victor = "Player2"
+        v_points = Player2_count
+        winner = True
+  scores.append(Victor +" "+ "achieved a score of" + " "
+ +str(v_points) +" "+ "points")
 #This module creates a new text file called, "winner details" and stores in it the winner and the number of points they have
 def store():
   MainFile = "winner details.txt"
