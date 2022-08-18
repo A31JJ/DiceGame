@@ -1,0 +1,135 @@
+#The purpose of this module is to authenticate both players and uses a boolean value to allow them to keep on trying to gain access while the respective variables for each player equal 'False'
+def authentication():
+  Player1_in = False
+  Player2_in = False
+  while Player1_in == False:
+    Username = str(input("Enter Username\n"))
+    Password = str(input("Enter password\n"))
+    if Username == "Player" and Password == "123":
+      Player1_in = True
+      print("Access Granted")
+      print("\n")
+    else:
+      print("Username or Password is incorrect")
+      print("\n")
+  while Player2_in == False:
+     Username = str(input("Player 2 Enter Username\n"))
+     Password = str(input("Enter password\n"))
+     if Username == "Player2" and Password == "456":
+      Player2_in = True
+      print("Access Granted")
+      print("\n")
+     else:
+      print("Username or Password is incorrect")
+      print("\n")
+# This module does not ask the user for any input. Two dice are rolled and a series of tests using the 'if..elif' command are then executed to determine the number of points that are added, subtracted or whether a tertiary dice needs to be rolled (if Dice_1 == Dice_2)
+def score():
+  import random
+  Dice_1 = random.randint(1,6)
+  Dice_2 = random.randint(1,6)
+  Total = Dice_1 + Dice_2
+  print("First Roll is" , Dice_1)
+  print("Second Roll is" , Dice_2)
+  points = 0
+  if Dice_1 == Dice_2:
+    Dice_3 = random.randint(1,6)
+    print("Third Roll is" , Dice_3)
+    points = points + Dice_3
+  elif Total%2==0:
+    points = points + 10
+  elif Total%2==1:
+    points= points - 5
+  print(points , "will be added to your total count")
+  return points
+# Two new variables with a 'global scope' are defined and the function runs through the code to play each round five times, displaying to the user the number of points deducted or added to their overall score and their total number of points by the end of the round. It also displays the winner of each round.
+def rounds():
+  global Player1_count
+  global Player2_count
+  for count in range(1,6):
+    Player1_count = Player1_count + score()
+    if Player1_count < 0:
+      Player1_count = 0
+    print("After Round" , count , "Player1 has" , Player1_count , "points")
+    print("\n")
+    Player2_count = Player2_count + score()
+    if Player2_count < 0:
+      Player2_count = 0
+    print("After Round" , count , "Player2 has" , Player2_count , "points")
+    print("\n")
+    if Player1_count > Player2_count:
+      r_winner =str(("The winner of round" , str(count) , "is Player1 with " +str(Player1_count) + " points"))
+      print(r_winner)
+      print("\n")
+    elif Player2_count > Player1_count:
+      r_winner =str(("The winner of round" , str(count) , "is Player2 with " +str(Player2_count) + " points"))
+      print(r_winner)
+      print("\n")
+    elif Player1_count == Player2_count:
+      print("It is a tie and there is no round winner")
+      print("\n")
+#This module of the program decides the overall winner of the game after all five rounds have been played. If the total score of both players is the same after five rounds then a tiebreaker round is played to determine the winner. The code for this is similar to that used in the authentication() module since it uses a boolean value to keep the code running until one die is greater than the other.
+def winner():
+  if Player1_count > Player2_count:
+    print("Player1 is the winner")
+    global Victor
+    global v_points
+    Victor = "Player1"
+    v_points = Player1_count
+  elif Player2_count > Player1_count:
+    print("Player2 is the winner")
+    Victor = "Player2"
+    v_points = Player2_count
+  elif Player1_count == Player2_count:
+    print("TIEBREAKER ROUND")
+    tiebreaker()
+def tiebreaker():
+  winner = ""
+  while winner == False:
+    import random
+    Dice_Tie1 = random.randint(1,6)
+    print("Player1 you rolled a" , Dice_Tie1)
+    Dice_Tie2 = random.randint(1,6)
+    print("Player2 you rolled a" , Dice_Tie2)
+    if Dice_Tie1 > Dice_Tie2:
+      print("Player1 is the winner")
+      Victor = "Player1"
+      v_points = Player1_count
+      winner = True
+    elif Dice_Tie2 > Dice_Tie1:
+      print("Player2 is the winner")
+      Victor = "Player2"
+      v_points = Player2_count
+      winner = True
+    scores.append(Victor +" "+ "achieved a score of" + " "
+    +str(v_points) +" "+ "points")
+#This module creates a new text file called, "winner details" and stores in it the winner and the number of points they have
+def store():
+  MainFile = "winner details.txt"
+  file = open(MainFile,"w")
+  file.write("The winner is" + " " + Victor + "\n")
+  file.write(Victor + " " + "has" + " " + str((v_points)) + " " + "points" )
+  file.close()
+#This module keeps a record of the top scorers
+def top_scorers():
+  MainFile = "top_scorers.txt"
+  file = open(MainFile,'w')
+  for item in scores:
+      file.write("%s\n" % item)
+#Main Program
+scores = []
+Victor = ""
+v_points = 0
+Player1_count = 0
+Player2_count = 0
+authentication()
+Play = str(input("Y/N\n"))
+while Play == "Y":
+ rounds()
+ winner()
+ store()
+ top_scorers()
+ Player1_count = 0
+ Player2_count = 0
+ Rematch = str(input("Y/N\n"))
+ if Rematch == "N":
+   Play = "N"
